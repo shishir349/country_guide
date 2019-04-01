@@ -1,0 +1,129 @@
+<html>
+  <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+     
+
+    <style>
+
+body {
+  background: #007bff;
+  background: linear-gradient(to right, rgb(25, 205, 236), #33AEFF);
+}
+div{
+        display: flex;
+  flex-direction: row;
+      } 
+      form{
+        display: flex;
+  flex-direction: row;
+  align-content: center;
+  /* margin-left:400px; */
+
+      } 
+    
+      $cardBorderWidth: 3px;
+    .gallery-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+
+    </style>
+  <script>
+    function convert(){
+      const $galleryContainer = document.querySelector('.gallery-container');
+			var country =document.getElementById("country").value;
+			
+			var xmlhttp= new XMLHttpRequest();
+			var url="https://www.triposo.com/api/20181213/location.json?id="+country+"&account=9R6MYXYN&token=90fk3acc2ibecd3j5hvnqxiie8hstgqo";
+      // console.log(url)
+			xmlhttp.open("GET", url, true);//async
+			xmlhttp.send();
+			xmlhttp.onreadystatechange=function(){
+				if(this.readyState === 4 && this.status === 200 )
+				{
+					var result=this.responseText;
+					console.log(result);
+					var jsResult=JSON.parse(result);
+                    console.log(jsResult);
+                    console.log(jsResult.results[0].name);
+         var namer=jsResult.results[0].name;
+         console.log(namer);
+         //document.getElementById("name").value=namer;
+         $("#name").append(namer);
+         $("#para1").append(jsResult.results[0].snippet);
+
+
+        var image_link = jsResult.results[0].images[0].source_url;
+        var galleryItem = document.createElement('div');
+      galleryItem.classList.add('gallery-item');
+      galleryItem.innerHTML = `
+        <img class="gallery-image" src="${image_link}" style="height:400px; width:400px; padding:20px; margin:20px;"  alt="gallery image"/>
+      `
+      $galleryContainer.appendChild(galleryItem);
+
+      var image_link = jsResult.results[0].images[2].source_url;
+        var galleryItem = document.createElement('div');
+      galleryItem.classList.add('gallery-item');
+      galleryItem.innerHTML = `
+        <img class="gallery-image" src="${image_link}" style="height:400px; width:400px; padding:20px; margin:20px;" alt="gallery image"/>
+      `
+      $galleryContainer.appendChild(galleryItem);
+
+      var image_link = jsResult.results[0].images[3].source_url;
+        var galleryItem = document.createElement('div');
+      galleryItem.classList.add('gallery-item');
+      galleryItem.innerHTML = `
+        <img class="gallery-image" src="${image_link}" style="height:400px; width:400px; padding:20px; margin:20px;" alt="gallery image"/>
+      `
+      $galleryContainer.appendChild(galleryItem);
+
+          
+				}
+      }
+    }
+</script>
+</head>
+<body>
+ 
+
+
+   <center> <h1>Country Guide</h1></center>
+  
+<form class="form-group col-sm-6">
+      <input type="text"  id="country" class="col-sm-2 form-control " placeholder="e.g= New_Delhi" />
+      <button type="button" name="button" class="btn btn-success" onclick="convert()"> Search Your Destination </button>
+    </form>
+
+    <hr>
+    <br>
+   <center> <h2 id="name"></h2></center>
+    <br>
+    <div class="gallery-container">
+
+    </div>
+
+    <div class="gallery-container">
+
+      </div><br>
+
+      <div class="gallery-container">
+
+        </div>
+    
+  <hr>
+<center><h3 id="para1" class="justify-content"></h3></center>
+ 
+
+</body>
+</html>
